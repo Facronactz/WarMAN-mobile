@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
 
@@ -18,19 +16,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    var database = Firebase.database("https://warman-f2321-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    var database = Firebase.database
 
     fun basicReadWrite(view: View) {
-        // [START write_message]
-        // Write a message to the database
-        val input = findViewById<EditText>(R.id.editText)
-        val inputtoDB = input.text.toString()
+        val inputPK = findViewById<EditText>(R.id.PK).text.toString()
+        val inputAttr = findViewById<EditText>(R.id.attr)
+        val inputtoDB = inputAttr.text.toString()
 
 
         val myRef = database.getReference("Restaurant")
-        myRef.child(inputtoDB).setValue(inputtoDB)
+        myRef.child(inputPK).setValue(inputtoDB)
 
-        myRef.child(inputtoDB).get().addOnSuccessListener {
+        myRef.child(inputPK).get().addOnSuccessListener {
             Toast.makeText(this, "${it.value}", Toast.LENGTH_SHORT).show()
         }.addOnFailureListener{
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
@@ -38,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun readDB(view: View) {
-        val input = findViewById<EditText>(R.id.editText)
+        val input = findViewById<EditText>(R.id.attr)
         val inputtoDB = input.text.toString()
 
         val myRef = database.getReference("Restaurant")
@@ -48,11 +45,5 @@ class MainActivity : AppCompatActivity() {
         }.addOnFailureListener{
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
         }
-    }
-
-
-    fun conto(){
-        myRef.child(Restaurant).child(Menu).child(Menu).getValue(Harga)
-        ReadDB(Restaurant, Menu, Nama)
     }
 }
